@@ -1,0 +1,10 @@
+1- login (2 types)
+2- registeration (2 types)
+3- Quick search
+4- Alternatives (6 inputs)
+5- Request for each subgroup type(get all data in the subgroup)
+6- Request for advanced search
+
+notes:
+- save the ieme of last login + active state (didn't log out)
+- The prog is free for 1 week, then the user must purchase the App, or log in from  another mobile (the current ieme will be retricted untill payment)
