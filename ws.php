@@ -51,6 +51,10 @@ if (!$loginChecks) {
             $response['producers'] = array();
             $response['error_message'] = "login required";
             break;
+        case "get_ads":
+            $response['ads'] = array();
+            $response['error_message'] = "login required";
+            break;
         default :break;
     }
 } else {
@@ -184,7 +188,13 @@ if (!$loginChecks) {
             while ($row = mysql_fetch_assoc($query)) {
                 $response['producers'][] = $row;
             }
+            break;
 
+        case "get_ads":
+            $query = mysql_query("SELECT * FROM ads WHERE ad_type='$_POST[adType]'");
+            while ($row = mysql_fetch_assoc($query)) {
+                $response['ads'][] = $row;
+            }
             break;
 
         case "register":
@@ -318,6 +328,7 @@ function login_check() {
         case "alternatives":
         case "advanced_search":
         case "get_data":
+        case "get_ads":
             list ($last_login_from, $expire_date, $is_active) = mysql_fetch_array(mysql_query("SELECT last_login_from, expire_date, is_active FROM users WHERE id='$_POST[user_id]'"), 0);
             if ($is_active != '1') {
                 return false;
