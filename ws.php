@@ -41,6 +41,7 @@ if (!$loginChecks) {
         case "quick_search":
         case "alternatives":
         case "advanced_search":
+        case "get_medic_by_id":
             $response['medics'] = array();
             $response['error_message'] = "login required";
             break;
@@ -161,6 +162,17 @@ if (!$loginChecks) {
                     . "WHERE $medicNameCond $mainGroupCond $subGroupCond $activeMaterialCond "
                     . "$priceCond $producerCond "
                     . "GROUP BY medic_id LIMIT 50");
+
+            $response['medics'] = array();
+            while ($row = mysql_fetch_assoc($query)) {
+                $response['medics'][] = $row;
+            }
+            break;
+
+        case "get_medic_by_id":
+            $query = mysql_query("SELECT $selectMedics FROM medics "
+                    . $innerJoin
+                    . "WHERE id='$_POST[medic_id]'");
 
             $response['medics'] = array();
             while ($row = mysql_fetch_assoc($query)) {
@@ -329,6 +341,7 @@ function login_check() {
         case "advanced_search":
         case "get_data":
         case "get_ads":
+        case "get_medic_by_id":
             list ($last_login_from, $expire_date, $is_active) = mysql_fetch_array(mysql_query("SELECT last_login_from, expire_date, is_active FROM users WHERE id='$_POST[user_id]'"), 0);
             if ($is_active != '1') {
                 return false;
@@ -356,6 +369,7 @@ function final_format($response) {
         case "quick_search":
         case "alternatives":
         case "advanced_search":
+        case "get_medic_by_id":
             if (count($response['medics']) > 0) {
                 $activesJoin = "";
                 $concentrationsJoin = "";
