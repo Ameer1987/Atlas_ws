@@ -172,7 +172,7 @@ if (!$loginChecks) {
         case "get_medic_by_id":
             $query = mysql_query("SELECT $selectMedics FROM medics "
                     . $innerJoin
-                    . "WHERE id='$_POST[medic_id]'");
+                    . "WHERE medics.id='$_POST[medic_id]'");
 
             $response['medics'] = array();
             while ($row = mysql_fetch_assoc($query)) {
