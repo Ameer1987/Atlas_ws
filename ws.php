@@ -217,7 +217,7 @@ if (!$loginChecks) {
             $pass = $_POST['pass'] != "" ? md5($_POST['pass']) : "";
 
             if ($facebookId != "") {
-                $user_already_exist = mysql_result(mysql_query("SELECT COUNT(*) FROM users WHERE facebook_id='$facebookId'"), 0);
+                $user_already_exist = mysql_result(mysql_query("SELECT COUNT(*) FROM users WHERE facebook_identity='$facebookId'"), 0);
             } else {
                 $user_already_exist = mysql_result(mysql_query("SELECT COUNT(*) FROM users WHERE user_name='$_POST[user_name]'"), 0);
             }
@@ -240,7 +240,7 @@ if (!$loginChecks) {
                 }
 
                 $query = mysql_query("INSERT INTO users (first_name, last_name, user_name, password, "
-                        . " mobile_num, email, expire_date, is_active, facebook_id, registered_device, "
+                        . " mobile_num, email, expire_date, is_active, facebook_identity, registered_device, "
                         . " user_group_id, registration_date, is_paid_to_google) "
                         . " VALUES ('$_POST[first_name]', '$_POST[last_name]', '$_POST[user_name]', '$pass', "
                         . " '$_POST[mobile_num]', '$_POST[email]', '$expireDate', '1', '$facebookId', "
@@ -259,7 +259,7 @@ if (!$loginChecks) {
         case "login":
             if ($_POST['facebook_id'] != "") {
                 $facebookId = md5($_POST['facebook_id']);
-                $query = mysql_query("SELECT * FROM users WHERE facebook_id='$facebookId'");
+                $query = mysql_query("SELECT * FROM users WHERE facebook_identity='$facebookId'");
             } else {
                 $pass = md5($_POST['pass']);
                 $query = mysql_query("SELECT * FROM users WHERE user_name='$_POST[user_name]' AND password='$pass'");
