@@ -17,7 +17,7 @@ $selectMedics = " medics.id AS medic_id, medics.name_eng AS name_eng, medics.nam
         . "        main_groups.name_eng AS main_group_eng, main_groups.name_ara AS main_group_ara, "
         . "        medics.sub_group_id AS sub_group_id, sub_groups.name_eng AS sub_group_eng, sub_groups.name_ara AS sub_group_ara, "
         . "        medics.producer_id AS producer_id, producers.name_eng AS producer_eng, producers.name_ara AS producer_ara, producer_address, "
-        . "        producer_tel1, producer_tel2, producer_tel3, producer_emails, img_url ";
+        . "        producer_tel1, producer_tel2, producer_tel3, producer_emails, img_url, precautions.details AS precautions ";
 
 $innerJoin = "LEFT JOIN main_groups "
         . "     ON medics.main_group_id=main_groups.id "
@@ -31,6 +31,8 @@ $innerJoin = "LEFT JOIN main_groups "
         . "     ON medics.local_import_id=local_import.id "
         . "LEFT JOIN doses "
         . "     ON medics.dose_id=doses.id "
+        . "LEFT JOIN precautions "
+        . "     ON medics.id=precautions.medic_id "
         . "LEFT JOIN materials "
         . "     ON medics.id=materials.medic_id ";
 
