@@ -86,8 +86,9 @@ if (!$loginChecks) {
                             . $innerJoin
                             . "WHERE $medicNameCond $mainGroupCond $subGroupCond $activeMaterialCond "
                             . "$priceCond $producerCond "
-                            . "GROUP BY medic_id LIMIT 50 "
-                            . "ORDER BY medics.name_eng");
+                            . "GROUP BY medic_id "
+                            . "ORDER BY medics.name_eng "
+                            . "LIMIT 50");
 
                     $response['medics'] = array();
                     while ($row = mysql_fetch_assoc($query)) {
@@ -133,8 +134,9 @@ if (!$loginChecks) {
                     . $innerJoin
                     . "WHERE $mainGroupCond $subGroupCond $materialCond "
                     . "$priceCond $producerCond $activeMaterialCond "
-                    . "GROUP BY medic_id LIMIT 50 "
-                    . "ORDER BY medics.name_eng");
+                    . "GROUP BY medic_id "
+                    . "ORDER BY medics.name_eng "
+                    . "LIMIT 50");
 
             $response['medics'] = array();
             while ($row = mysql_fetch_assoc($query)) {
@@ -165,8 +167,9 @@ if (!$loginChecks) {
                     . $innerJoin
                     . "WHERE $medicNameCond $mainGroupCond $subGroupCond $activeMaterialCond "
                     . "$priceCond $producerCond "
-                    . "GROUP BY medic_id LIMIT 50 "
-                    . "ORDER BY medics.name_eng");
+                    . "GROUP BY medic_id "
+                    . "ORDER BY medics.name_eng "
+                    . "LIMIT 50");
 
             $response['medics'] = array();
             while ($row = mysql_fetch_assoc($query)) {
