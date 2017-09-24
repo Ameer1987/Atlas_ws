@@ -86,7 +86,8 @@ if (!$loginChecks) {
                             . $innerJoin
                             . "WHERE $medicNameCond $mainGroupCond $subGroupCond $activeMaterialCond "
                             . "$priceCond $producerCond "
-                            . "GROUP BY medic_id LIMIT 50");
+                            . "GROUP BY medic_id LIMIT 50 "
+                            . "ORDER BY medics.name_eng");
 
                     $response['medics'] = array();
                     while ($row = mysql_fetch_assoc($query)) {
@@ -132,7 +133,8 @@ if (!$loginChecks) {
                     . $innerJoin
                     . "WHERE $mainGroupCond $subGroupCond $materialCond "
                     . "$priceCond $producerCond $activeMaterialCond "
-                    . "GROUP BY medic_id LIMIT 50");
+                    . "GROUP BY medic_id LIMIT 50 "
+                    . "ORDER BY medics.name_eng");
 
             $response['medics'] = array();
             while ($row = mysql_fetch_assoc($query)) {
@@ -163,7 +165,8 @@ if (!$loginChecks) {
                     . $innerJoin
                     . "WHERE $medicNameCond $mainGroupCond $subGroupCond $activeMaterialCond "
                     . "$priceCond $producerCond "
-                    . "GROUP BY medic_id LIMIT 50");
+                    . "GROUP BY medic_id LIMIT 50 "
+                    . "ORDER BY medics.name_eng");
 
             $response['medics'] = array();
             while ($row = mysql_fetch_assoc($query)) {
@@ -183,22 +186,22 @@ if (!$loginChecks) {
             break;
 
         case "get_data":
-            $query = mysql_query("SELECT * FROM main_groups");
+            $query = mysql_query("SELECT * FROM main_groups ORDER BY name_eng");
             while ($row = mysql_fetch_assoc($query)) {
                 $response['main_groups'][] = $row;
             }
 
-            $query = mysql_query("SELECT * FROM sub_groups");
+            $query = mysql_query("SELECT * FROM sub_groups ORDER BY name_eng");
             while ($row = mysql_fetch_assoc($query)) {
                 $response['sub_groups'][] = $row;
             }
 
-            $query = mysql_query("SELECT * FROM active_materials");
+            $query = mysql_query("SELECT * FROM active_materials ORDER BY active_name");
             while ($row = mysql_fetch_assoc($query)) {
                 $response['active_materials'][] = $row;
             }
 
-            $query = mysql_query("SELECT * FROM producers");
+            $query = mysql_query("SELECT * FROM producers ORDER BY name_eng");
             while ($row = mysql_fetch_assoc($query)) {
                 $response['producers'][] = $row;
             }
