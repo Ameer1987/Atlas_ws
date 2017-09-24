@@ -208,7 +208,11 @@ if (!$loginChecks) {
             break;
 
         case "get_ads":
-            $query = mysql_query("SELECT * FROM ads WHERE ad_type='$_POST[adType]'");
+            $query = mysql_query("SELECT ads.id AS id, ads.img_url AS main_img_url, title, desc, ad_type, ad_urls.img_url AS img_url "
+                    . "FROM ads "
+                    . "INNER JOIN ad_urls "
+                    . "    ON ads.id=ad_urls.ad_id "
+                    . "WHERE ad_type='$_POST[adType]'");
             while ($row = mysql_fetch_assoc($query)) {
                 $response['ads'][] = $row;
             }
