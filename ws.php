@@ -384,44 +384,36 @@ function final_format($response) {
         case "advanced_search":
         case "get_medic_by_id":
             if (count($response['medics']) > 0) {
-                $activesJoin = "";
-                $concentrationsJoin = "";
-                $activesSelect = "";
-                $concentrationsSelect = "";
-                for ($i = 1; $i < 31; $i++) {
-                    $activesJoin .= " LEFT JOIN active_materials a_$i ON a_$i.id = active_$i ";
-                    $concentrationsJoin .= " LEFT JOIN concentrations c_$i ON c_$i.id = concentration_$i ";
-
-                    $activesSelect .= " a_$i.id AS id_$i, a_$i.active_name AS active_name_$i, "
-                            . " a_$i.medscape_url AS medscape_url_$i, a_$i.drugs_url AS drugs_url_$i, "
-                            . " a_$i.comments AS comments_$i, ";
-
-                    $concentrationsSelect .= " c_$i.concentration AS concentration_$i, ";
+                $query = mysql_query("SELECT * FROM active_materials");
+                $active_materials_arr = array();
+                while ($row = mysql_fetch_assoc($query)) {
+                    $active_materials_arr[$row['id']] = $row;
                 }
-                $activesSelect = trim($activesSelect, ', ');
-                $concentrationsSelect = trim($concentrationsSelect, ', ');
+
+                $query = mysql_query("SELECT * FROM concentrations");
+                $concentrations_arr = array();
+                while ($row = mysql_fetch_assoc($query)) {
+                    $concentrations_arr[$row['id']] = $row;
+                }
 
                 foreach ($response['medics'] as $key => $value) {
-                    $query = mysql_query("SELECT $activesSelect, $concentrationsSelect "
-                            . "         FROM materials "
-                            . "         $activesJoin $concentrationsJoin "
-                            . "         WHERE medic_id='$value[medic_id]'");
-
+                    $query = mysql_query("SELECT * FROM materials WHERE medic_id='$value[medic_id]'");
                     $active_materials = array();
                     $active_materials_concatenation = "";
                     while ($row = mysql_fetch_assoc($query)) {
                         for ($i = 1; $i < 32; $i++) {
-                            if ($row["id_$i"] != "") {
+                            if (isset($active_materials_arr[$row["active_$i"]])) {
+                                $row["concentration_$i"] = isset($concentrations_arr[$row["concentration_$i"]]) ? $concentrations_arr[$row["concentration_$i"]]['concentration'] : "";
                                 $arr = array();
-                                $arr['id'] = $row["id_$i"];
-                                $arr['active_name'] = $row["active_name_$i"];
-                                $arr['medscape_url'] = $row["medscape_url_$i"];
-                                $arr['drugs_url'] = $row["drugs_url_$i"];
-                                $arr['comments'] = $row["comments_$i"];
+                                $arr['id'] = $active_materials_arr[$row["active_$i"]]['id'];
+                                $arr['active_name'] = $active_materials_arr[$row["active_$i"]]['active_name'];
+                                $arr['medscape_url'] = $active_materials_arr[$row["active_$i"]]['medscape_url'];
+                                $arr['drugs_url'] = $active_materials_arr[$row["active_$i"]]['drugs_url'];
+                                $arr['comments'] = $active_materials_arr[$row["active_$i"]]['comments'];
                                 $arr['concentration'] = $row["concentration_$i"];
                                 $active_materials[] = $arr;
-                                $active_materials_concatenation .= $row["active_name_$i"] != "" ? $row["active_name_$i"] : "";
-                                $active_materials_concatenation .= $row["concentration_$i"] != "" ? (": " . $row["concentration_$i"]) : "";
+                                $active_materials_concatenation .= $arr['active_name'] != "" ? $arr['active_name'] : "";
+                                $active_materials_concatenation .= $arr['concentration'] != "" ? (": " . $arr['concentration']) : "";
                                 $active_materials_concatenation .= ", ";
                             }
                         }
